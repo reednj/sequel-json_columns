@@ -1,7 +1,7 @@
 require "sequel/json_columns/version"
 
-module Sequel
+module Sequel::Plugins
   module JsonColumns
-    # Your code goes here...
+    
   end
 end
