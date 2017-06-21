@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'sequel/json_columns/version'
+require 'sequel/plugins/json_columns'
 
 Gem::Specification.new do |spec|
   spec.name          = "sequel-json_columns"
-  spec.version       = Sequel::JsonColumns::VERSION
+  spec.version       = Sequel::Plugins::JsonColumns::VERSION
   spec.authors       = ["Nathan Reed"]
   spec.email         = ["reednj@gmail.com"]
 
-  spec.summary       = "Add json fields to sequel"
+  spec.summary       = "Add json fields to sequel, even if not supported by the engine"
   spec.homepage      = "https://github.com/reednj/sequel-json_columns"
   spec.license       = "MIT"
 
@@ -22,5 +22,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "mysql2"
+  spec.add_dependency "sequel"
   
 end

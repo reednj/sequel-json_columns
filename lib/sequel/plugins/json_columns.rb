@@ -1,7 +1,10 @@
-require "sequel/json_columns/version"
+require 'sequel'
+require 'json'
 
 module Sequel::Plugins
   module JsonColumns
+    VERSION = "1.0.2"
+    
     module ClassMethods
       def json_column(column_name)
         column_name = column_name.to_sym
