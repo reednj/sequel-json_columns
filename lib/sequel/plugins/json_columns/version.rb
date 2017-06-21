@@ -1,5 +1,5 @@
 module Sequel::Plugins
   module JsonColumns
-    VERSION = "0.1.0"
+    VERSION = "1.0.2"
   end
 end
