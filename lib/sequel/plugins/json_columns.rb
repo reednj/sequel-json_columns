@@ -25,6 +25,11 @@ module Sequel::Plugins
     end
 
     module InstanceMethods
+      def refresh
+        super
+        @serialized_data = nil
+      end
+
       def before_save
         (@serialized_data || {}).keys.each do |k|
           values[k] = @serialized_data[k].to_json

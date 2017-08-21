@@ -32,7 +32,32 @@ class JsonColumnTests < Test::Unit::TestCase
 		assert_equal a.info[:color], b.info[:color]
 	end
 
+	# there is a bug where if the metadata has been accessed, and is then
+	# changed elsewhere afterwards, a refresh will not pick up the change, 
+	# because the cached object is not cleared properly
+	#
+	# to test this, we get an item, access the json_column, then modify the
+	# json_column in a different object and refresh the original. Without an
+	# overriden `refresh` they will not match
+	def test_refresh_object
+		# the json_column is lazy loaded, so it is important that we access it
+		# at the start, otherwise this test wil not replicate the bug
+		a = Item.last
+		assert_not_nil a.info
 
+		b = Item[a.id]
+		b.name = 'hello'
+		b.info[:color] = 'yellow'
+
+		# save the changes to b and refresh a. The object should
+		# now be equal
+		b.save
+		a.refresh
+
+		assert_equal a.name, b.name
+		assert_equal a.info[:color], b.info[:color]
+
+	end
 end
 
 
