@@ -1,33 +1,39 @@
 #!/usr/bin/env ruby
 
-require 'sequel'
+require 'rubygems'
+require 'test/unit'
+
 require 'json'
 require 'yaml'
 
-DB = Sequel.sqlite
+require_relative './sqlite'
 
-class Sequel::Model
-    plugin :json_columns
-end
 
-DB.create_table :items do
-  primary_key :id
-  String :name
-  Float :price
-end
-
-class Item < Sequel::Model
-	def self.random
-		self.new do |item|
-			item.name = 'item-' + (rand()*100).round.to_s
-			item.price = (rand()*100).round(2)
-		end
+class JsonColumnTests < Test::Unit::TestCase
+	def test_read_json_column
+		a = Item[2]
+		assert_not_nil a
+		assert_not_nil a.info
+		assert a.info.is_a? Hash
+		assert_equal a.info[:color], "red"
 	end
 
-	def to_s
-		"#{name} (#{price})"
+	def test_save_json_column
+		a = Item.random.save
+		a.name = 'hello m8'
+		a.info[:color] = 'blue'
+		a.save
+
+		# get the same item again, and make sure the json changes have
+		# persisted
+		b = Item[a.id]
+		assert_equal a.id, b.id
+		assert_equal a.name, b.name
+		assert_equal a.info[:color], b.info[:color]
 	end
+
+
 end
 
-10.times { Item.random.save }
-puts Item.all.map{|i| i.to_s }.to_yaml
+
+
