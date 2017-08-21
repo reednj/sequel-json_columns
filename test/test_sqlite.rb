@@ -32,6 +32,20 @@ class JsonColumnTests < Test::Unit::TestCase
 		assert_equal a.info[:color], b.info[:color]
 	end
 
+	# need to make sure that if the json column is the only thing changed
+	# this it gets serialized properly still
+	def test_detect_changes
+		a = Item.random.save
+		a.info[:color] = '#fd4'
+		a.save_changes
+
+		# get the same item again, and make sure the json changes have
+		# persisted
+		b = Item[a.id]
+		assert_equal a.id, b.id
+		assert_equal a.info[:color], b.info[:color]
+	end
+
 	# there is a bug where if the metadata has been accessed, and is then
 	# changed elsewhere afterwards, a refresh will not pick up the change, 
 	# because the cached object is not cleared properly
