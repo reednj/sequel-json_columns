@@ -3,7 +3,7 @@ require 'json'
 
 module Sequel::Plugins
   module JsonColumns
-    VERSION = "1.0.2"
+    VERSION = "1.1.2"
     
     module ClassMethods
       def json_column(column_name)
